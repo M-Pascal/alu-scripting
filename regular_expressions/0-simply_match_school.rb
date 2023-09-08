@@ -1,2 +1,2 @@
 #!/usr/bin/env ruby
-/School/
+/(B|b)e.st Scho.l/
