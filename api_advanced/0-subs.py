@@ -1,18 +1,14 @@
-import json
-import urllib.error
-import urllib.parse
-import urllib.request
+import requests
 
 def number_of_subscribers(subreddit):
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    req_object = urllib.request.Request(url, method="GET")
-    req_object.add_header('User-Agent', 'OboloScript/1.0')
+    headers = {'User-Agent': 'Custom User Agent'}  # Set a custom User-Agent header to prevent Too Many Requests errors
+    response = requests.get(url, headers=headers)
     
-    try:
-        with urllib.request.urlopen(req_object) as res_object:
-            res_json = json.JSONDecoder().decode(res_object.read().decode("utf-8"))
-    except urllib.error.HTTPError:
-        return 0
+    if response.status_code == 200:
+        data = response.json()
+        subscribers = data['data']['subscribers']
+        return subscribers
     else:
-        return res_json["data"]["subscribers"]
+        return 0
 
